@@ -17,7 +17,7 @@
 	"//GRT_RESIZER_ALLOW_SETUP_VIOS": true,
 	"SYNTH_STRATEGY": "DELAY 2",
 	"MAX_FANOUT_CONSTRAINT": 6,
-	"DIE_AREA": [0, 0, 800, 650],
+	"DIE_AREA": [0, 0, 750, 650],
 	"FP_SIZING": "absolute",
 	"CTS_CLK_BUFFERS": ["sky130_fd_sc_hd__clkbuf_2", "sky130_fd_sc_hd__clkbuf_4", "sky130_fd_sc_hd__clkbuf_8", "sky130_fd_sc_hd__clkbuf_16"],
 	"MACROS": {
@@ -32,7 +32,7 @@
 				},
 				"i_hl": {
 					"location": [
-                        350,
+                        325,
                         50
                     ],
                     "orientation": "N"
@@ -40,14 +40,14 @@
 				"i_lh": {
 					"location": [
                         50,
-                        350
+                        375
                     ],
                     "orientation": "N"
 				},
 				"i_ll": {
 					"location": [
-                        350,
-                        350
+                        325,
+                        375
                     ],
                     "orientation": "N"
 				}

@@ -12,7 +12,7 @@
     "GRT_ANTENNA_ITERS": 10,
     "GRT_ANTENNA_MARGIN": 15,
     "RUN_HEURISTIC_DIODE_INSERTION": true,
-	"DIE_AREA": [0, 0, 100, 400],
+	"DIE_AREA": [0, 0, 50, 500],
 	"FP_SIZING": "absolute",
 	"SYNTH_STRATEGY": "DELAY 2",
 	"FALLBACK_SDC_FILE": "dir::add64.sdc"
