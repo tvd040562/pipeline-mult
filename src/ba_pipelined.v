@@ -1,18 +1,49 @@
-module add3x64 (
+module stage3 (
 	input clk,
 	input rst,
-	input [63:0] in1,
-	input [63:0] in2,
-	input [63:0] in3,
-	output reg [63:0] out
+	input [31:0] p_hh, 
+	input [31:0] p_hl, 
+	input [31:0] p_lh, 
+	input [31:0] p_ll,
+	output reg [63:0] p
 );
 `ifndef MACRO
+    // --- STAGE 3: FIRST ADDITION (Cộng các phần chéo trước) ---
+    // Thay vì cộng tất cả, nhịp này chỉ cộng HL + LH thôi cho nhẹ.
+    reg [32:0] mid_sum;
+    reg [31:0] p_hh_pipe, p_ll_pipe;
+
+    always @(posedge clk) begin
+        if (rst) begin
+            mid_sum <= 0; p_hh_pipe <= 0; p_ll_pipe <= 0;
+        end else begin
+            mid_sum <= p_hl + p_lh; // Chỉ làm mỗi việc cộng 2 số này
+            p_hh_pipe <= p_hh;      // Mấy cái kia chỉ việc đi chơi (truyền thẳng)
+            p_ll_pipe <= p_ll;
+        end
+    end
+
+    // --- STAGE 4: SECOND ADDITION (Chuẩn bị số hạng) ---
+    // Tách việc dịch bit và cộng ra
+    reg [63:0] term_high, term_mid, term_low;
+
+    always @(posedge clk) begin
+         if (rst) begin
+            term_high <= 0; term_mid <= 0; term_low <= 0;
+         end else begin
+            term_high <= {32'b0, p_hh_pipe} << 32;
+            term_mid  <= {31'b0, mid_sum}   << 16;
+            term_low  <= {32'b0, p_ll_pipe};
+         end
+    end
+
     always @(posedge clk) begin
         if (rst)
-			out <= 0;
+			p <= 0;
 		else
-			out <= in1+in2+in3;
+			p <= term_high + term_mid + term_low;
 	end
+	
 `endif
 endmodule
 
@@ -71,36 +102,37 @@ module pipelined_mult (
 
     // --- STAGE 3: FIRST ADDITION (Cộng các phần chéo trước) ---
     // Thay vì cộng tất cả, nhịp này chỉ cộng HL + LH thôi cho nhẹ.
-    reg [32:0] mid_sum;
-    reg [31:0] p_hh_pipe, p_ll_pipe;
-
-    always @(posedge clk) begin
-        if (rst) begin
-            mid_sum <= 0; p_hh_pipe <= 0; p_ll_pipe <= 0;
-        end else begin
-            mid_sum <= p_hl + p_lh; // Chỉ làm mỗi việc cộng 2 số này
-            p_hh_pipe <= p_hh;      // Mấy cái kia chỉ việc đi chơi (truyền thẳng)
-            p_ll_pipe <= p_ll;
-        end
-    end
-
-    // --- STAGE 4: SECOND ADDITION (Chuẩn bị số hạng) ---
-    // Tách việc dịch bit và cộng ra
-    reg [63:0] term_high, term_mid, term_low;
-
-    always @(posedge clk) begin
-         if (rst) begin
-            term_high <= 0; term_mid <= 0; term_low <= 0;
-         end else begin
-            term_high <= {32'b0, p_hh_pipe} << 32;
-            term_mid  <= {31'b0, mid_sum}   << 16;
-            term_low  <= {32'b0, p_ll_pipe};
-         end
-    end
-
-    // --- STAGE 5: FINAL MERGE ---
-    // Cộng 3 số hạng cuối cùng
-	add3x64 i_add (.clk(clk), .rst(rst), .in1(term_high), .in2(term_mid), .in3(term_low), .out(p)); 
-
+    //reg [32:0] mid_sum;
+    //reg [31:0] p_hh_pipe, p_ll_pipe;
+	//
+    //always @(posedge clk) begin
+    //    if (rst) begin
+    //        mid_sum <= 0; p_hh_pipe <= 0; p_ll_pipe <= 0;
+    //    end else begin
+    //        mid_sum <= p_hl + p_lh; // Chỉ làm mỗi việc cộng 2 số này
+    //        p_hh_pipe <= p_hh;      // Mấy cái kia chỉ việc đi chơi (truyền thẳng)
+    //        p_ll_pipe <= p_ll;
+    //    end
+    //end
+	//
+    //// --- STAGE 4: SECOND ADDITION (Chuẩn bị số hạng) ---
+    //// Tách việc dịch bit và cộng ra
+    //reg [63:0] term_high, term_mid, term_low;
+	//
+    //always @(posedge clk) begin
+    //     if (rst) begin
+    //        term_high <= 0; term_mid <= 0; term_low <= 0;
+    //     end else begin
+    //        term_high <= {32'b0, p_hh_pipe} << 32;
+    //        term_mid  <= {31'b0, mid_sum}   << 16;
+    //        term_low  <= {32'b0, p_ll_pipe};
+    //     end
+    //end
+	//
+    //// --- STAGE 5: FINAL MERGE ---
+    //// Cộng 3 số hạng cuối cùng
+	//add3x64 i_add (.clk(clk), .rst(rst), .in1(term_high), .in2(term_mid), .in3(term_low), .out(p)); 
+	stage3 i_stage3 (.clk(clk), .rst(rst), .p_hh(p_hh), .p_hl(p_hl), .p_lh(p_lh), .p_ll(p_ll), .p(p));
+	
 endmodule 
 `endif

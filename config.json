@@ -6,7 +6,7 @@
 	"CLOCK_PERIOD": 10.0,
 	"PNR_SDC_FILE": "dir::src/pnr.sdc",
 	"SIGNOFF_SDC_FILE": "dir::src/signoff.sdc",
-	"FP_PIN_ORDER_CFG": "dir::pin_order.cfg",
+	"FP_PIN_ORDER_CFG": "dir::pin_order2.cfg",
 	"//GRT_REPAIR_ANTENNAS": true,
 	"RUN_ANTENNA_REPAIR": true,
 	"GRT_ANTENNA_ITERS": 10,
@@ -17,7 +17,7 @@
 	"//GRT_RESIZER_ALLOW_SETUP_VIOS": true,
 	"SYNTH_STRATEGY": "DELAY 2",
 	"MAX_FANOUT_CONSTRAINT": 6,
-	"DIE_AREA": [0, 0, 750, 650],
+	"DIE_AREA": [0, 0, 700, 600],
 	"FP_SIZING": "absolute",
 	"CTS_CLK_BUFFERS": ["sky130_fd_sc_hd__clkbuf_2", "sky130_fd_sc_hd__clkbuf_4", "sky130_fd_sc_hd__clkbuf_8", "sky130_fd_sc_hd__clkbuf_16"],
 	"MACROS": {
@@ -40,14 +40,14 @@
 				"i_lh": {
 					"location": [
                         50,
-                        375
+                        325
                     ],
                     "orientation": "N"
 				},
 				"i_ll": {
 					"location": [
                         325,
-                        375
+                        325
                     ],
                     "orientation": "N"
 				}
@@ -62,24 +62,24 @@
                 "*": "dir::macro/lib/max_ss_100C_1v60/mult_16x16__max_ss_100C_1v60.lib"
             }
 		},
-		"add3x64": {
+		"stage3": {
 			"instances": {
-				"i_add": {
+				"i_stage3": {
 					"location": [
-                        650,
+                        610,
                         50
                     ],
                     "orientation": "N"
 				}
 			},
             "gds": [
-                "dir::macro/gds/add3x64.gds"
+                "dir::macro/gds/stage3.gds"
             ],
             "lef": [
-                "dir::macro/lef/add3x64.lef"
+                "dir::macro/lef/stage3.lef"
             ],
             "lib": {
-                "*": "dir::macro/lib/max_ss_100C_1v60/add3x64__max_ss_100C_1v60.lib"
+                "*": "dir::macro/lib/max_ss_100C_1v60/stage3__max_ss_100C_1v60.lib"
             }
 		}
 	}

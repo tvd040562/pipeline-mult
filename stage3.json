@@ -1,5 +1,5 @@
 {
-	"DESIGN_NAME": "add3x64",
+	"DESIGN_NAME": "stage3",
 	"VERILOG_FILES": ["dir::src/ba_pipelined.v"],
 	"CLOCK_PERIOD": 10.0,
 	"CLOCK_PORT": "clk",
@@ -12,10 +12,10 @@
     "GRT_ANTENNA_ITERS": 10,
     "GRT_ANTENNA_MARGIN": 15,
     "RUN_HEURISTIC_DIODE_INSERTION": true,
-	"DIE_AREA": [0, 0, 40, 550],
+	"DIE_AREA": [0, 0, 50, 500],
 	"//FP_PDN_VOFFSET": 5,
 	"//FP_PDN_VWIDTH": 5,
 	"FP_SIZING": "absolute",
 	"SYNTH_STRATEGY": "DELAY 2",
-	"FALLBACK_SDC_FILE": "dir::add64.sdc"
+	"FALLBACK_SDC_FILE": "dir::stage3.sdc"
 }
