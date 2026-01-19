@@ -70,7 +70,7 @@ module mult_16x16 (
 `endif
 endmodule
 
-`ifdef MACRO
+//`ifdef MACRO
 module pipelined_mult (
     input clk,
     input rst,
@@ -135,4 +135,4 @@ module pipelined_mult (
 	stage3 i_stage3 (.clk(clk), .rst(rst), .p_hh(p_hh), .p_hl(p_hl), .p_lh(p_lh), .p_ll(p_ll), .p(p));
 	
 endmodule 
-`endif
+//`endif
